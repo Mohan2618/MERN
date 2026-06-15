@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="jokeId" placeholder="Enter Id of Joke">
+    <button onclick="Jokes()">Search</button>
+
+    <h4 id="Id"></h4>
+    <h4>Joke</h4><br>
+    <h4 id="setup"></h4>
+    <h4 id="delivery"></h4>
+    <h4 id="category"></h4>
+
+    <script>
+    async function Jokes() {
+        try {
+            const jokeid = parseInt(document.getElementById("jokeId").value);
+
+            const response = await fetch(
+                `https://v2.jokeapi.dev/joke/Any?idRange=${jokeid}`
+            );
+
+            if (!response.ok) {
+                throw new Error("data is not available!");
+            }
+
+            const data = await response.json();
+
+            document.getElementById("Id").innerHTML =
+                "ID: " + data.id;
+
+            document.getElementById("category").innerHTML =
+                "Category: " + data.category;
+
+            if (data.type === "single") {
+                document.getElementById("setup").innerHTML =
+                    "Joke: " + data.joke;
+
+                document.getElementById("delivery").innerHTML = "";
+            } else {
+                document.getElementById("setup").innerHTML =
+                    "Setup: " + data.setup;
+
+                document.getElementById("delivery").innerHTML =
+                    "Delivery: " + data.delivery;
+            }
+
+        } catch (e) {
+            console.log(e);
+            alert("Not Available");
+        }
+    }
+</script>
+</body>
+</html>
